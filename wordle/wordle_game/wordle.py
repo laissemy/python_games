@@ -1,4 +1,4 @@
-from letterstate import LetterState
+from wordle_game.letterstate import LetterState
 
 class Wordle:
     NUM_TENTATIVAS = 6
@@ -29,11 +29,10 @@ class Wordle:
         palavra = palavra.upper()
         resultado = []
 
-        for i in range(len(self.WORD_LENGTH)):
+        for i in range(self.TAMANHO_PALAVRAS):
             letra = LetterState(palavra[i])
             letra.dentro_da_palavra = palavra[i] in self.palavra_secreta
             letra.dentro_da_posicao = palavra[i] == self.palavra_secreta[i]
-            resultado.append(i)
-
-        return []
+            resultado.append(letra)
+        return resultado
 
