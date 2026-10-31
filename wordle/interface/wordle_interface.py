@@ -16,6 +16,7 @@ TEMAS = {
 }
 
 def main():
+    
     escolha = escolher_opcao()
 
     if escolha:
@@ -29,33 +30,55 @@ def main():
 
 def display_opcoes():
     opcoes = ["Escolha o tema da palavra:"]
-    opcoes += [f"{chave}.{nome}" for chave, (nome, _) in TEMAS.items()]
+    opcoes += [ f"{chave}.{nome}" for chave, (nome, _) in TEMAS.items()]
     opcoes.append("X.Sair")
     desenha_borda(opcoes, tamanho=max(len(o) for o in opcoes), centralizar=True)
 
 def escolher_opcao():
     """Devolve tema e arquivo"""
+
     display_opcoes()
+    
     while True:
-        x = input("Insira o número: ").strip().upper()
+        
+        x = input(
+                  Fore.LIGHTMAGENTA_EX
+                  +  f"Insira o número: " 
+                  + Fore.RESET
+                  ).strip().upper()
+        
         if x == "X":
             return None
         if x in TEMAS:
             return TEMAS[x]
-        print(Fore.RED + "Opção inválida, tente novamente." + Fore.RESET)
+        
+        print(
+            Fore.RED 
+            + "Opção inválida, tente novamente." 
+            + Fore.RESET
+            )
 
 def iniciar_wordle(palavra_secreta : str, word_set :str, tema : str):
     
     wordle = Wordle(palavra_secreta, tema)
     
-    while wordle.possuiTegitntativas:
-            display_resultados(wordle)
-            tentativa = input(Fore.LIGHTCYAN_EX + "Escreva sua tentativa: " + Fore.RESET)
+    while wordle.possuiTentativas:
             
-            if (len(tentativa) != wordle.TAMANHO_PALAVRAS):
-                print(Fore.RED 
-                      + f"A palavra deve ter {wordle.TAMANHO_PALAVRAS} caracteres"
+            display_resultados(wordle)
+            tentativa = input(Fore.LIGHTMAGENTA_EX + "Escreva sua tentativa ou (x) para desistir: " + Fore.RESET).upper()
+
+            if tentativa == "X":
+                print(Fore.YELLOW + 
+                      f"Fim de jogo" 
                       + Fore.RESET)
+                break
+
+            if (len(tentativa) != wordle.TAMANHO_PALAVRAS):
+                print(
+                        Fore.RED 
+                      + f"A palavra deve ter {wordle.TAMANHO_PALAVRAS} caracteres"
+                      + Fore.RESET
+                      )
                 continue 
     
             if not tentativa.upper() in word_set:
@@ -63,20 +86,27 @@ def iniciar_wordle(palavra_secreta : str, word_set :str, tema : str):
                     Fore.RED
                     + f"{tentativa} não é uma palavra válida!"
                     + Fore.RESET
-                )
+                    )
                 continue
 
-            if tentativa == "X":
-                print("Fim de jogo")
-                return
+            
+                   
             
             wordle.tentativa(tentativa)
             display_resultados(wordle)
 
     if wordle.vitoria:
-        print(f"Você acertou!")
+        print(
+              Fore.GREEN 
+              + f"Você acertou!" 
+              + Fore.RESET
+              )
     else:
-        print(f"Você errou, a palavra era: {wordle.palavra_secreta}")
+        print(
+              Fore.RED 
+              + f"Você errou, a palavra era: {wordle.palavra_secreta}"
+              + Fore.RESET
+              )
 
 def display_resultados(wordle : Wordle):
 
@@ -91,10 +121,20 @@ def display_resultados(wordle : Wordle):
         linhas.append(" ".join(["_"] * wordle.TAMANHO_PALAVRAS))
 
     desenha_borda(linhas=linhas)
-    print(f"Palavra possui: {wordle.TAMANHO_PALAVRAS} caracteres")
+    print(Fore.BLUE + f"Palavra possui: {wordle.TAMANHO_PALAVRAS} caracteres")
     print(f"Tentativas restantes: {wordle.tentativasRestantes}")
-    print(f"Tema: {wordle.tema} \n")
+    print(f"Tema: {wordle.tema} \n" + Fore.RESET)
 
+def load_set(path: str):
+    
+    word_set = set()
+    
+    with open(path, "r", encoding="utf-8") as f:
+        for linha in f.readlines():
+            palavra = linha.strip().upper()
+            if palavra:
+                word_set.add(palavra)
+    return word_set
 
 def colorizador(resultado : List[LetterState]):
     
@@ -127,16 +167,6 @@ def desenha_borda(linhas : List[str], tamanho: int=9, pad: int=1, centralizar: b
 
     print(borda_inferior)
 
-def load_set(path: str):
-    
-    word_set = set()
-    
-    with open(path, "r", encoding="utf-8") as f:
-        for linha in f.readlines():
-            palavra = linha.strip().upper()
-            if palavra:
-                word_set.add(palavra)
-    return word_set
 
 if __name__ == "__main__":
     main()
