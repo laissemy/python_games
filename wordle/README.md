@@ -63,7 +63,10 @@ python interface/wordle_interface.py
 ```
 wordle/
 ├── data/
-│   └── exemplo.txt           # Palavras usadas no jogo
+│   ├── acao.txt              # Palavras do tema Ação
+│   ├── objeto.txt            # Palavras do tema Objeto
+│   ├── comida.txt            # Palavras do tema Comida
+│   └── filme.txt             # Palavras do tema Filme
 ├── interface/
 │   └── wordle_interface.py   # Interface e loop do jogo no terminal
 ├── wordle_game/
@@ -73,16 +76,55 @@ wordle/
 └── README.md
 ```
 
+## Adicionando novos temas
+
+Cada tema é um arquivo `.txt` dentro da pasta `data/`. Para criar o seu:
+
+### 1. Crie o arquivo de palavras
+
+Crie um arquivo em `data/`, por exemplo `animal.txt`, seguindo estas regras:
+
+- Uma palavra por linha.
+- Todas as palavras com **5 letras**.
+- Sem acentos (por exemplo, `agua` e não `água`).
+- Sem linhas com outro conteúdo (título, comentários etc.).
+
+Exemplo de `animal.txt`:
+
+```
+zebra
+tigre
+cobra
+ovelha
+```
+
+### 2. Registre o tema no código
+
+Abra `interface/wordle_interface.py` e adicione uma linha no dicionário `TEMAS`, com o número da opção, o nome que aparece no menu e o nome do arquivo:
+
+```python
+TEMAS = {
+    "1": ("Ação", "acao.txt"),
+    "2": ("Objeto", "objeto.txt"),
+    "3": ("Comida", "comida.txt"),
+    "4": ("Filme", "filme.txt"),
+    "5": ("Animal", "animal.txt"),   # novo tema
+}
+```
+
+O menu é montado a partir desse dicionário, então a nova opção aparece sozinha na próxima vez que você rodar o jogo.
+
 ## Feito com
+
 - [Python 3](https://www.python.org/)
 - [Colorama](https://pypi.org/project/colorama/): cores no terminal
 
 ## Melhorias futuras
 
-- [ ] Validar se o palpite existe na lista de palavras
 - [ ] Tratar acentos na entrada do jogador
 - [ ] Mostrar o teclado com as letras já usadas
 - [ ] Contador de vitórias e derrotas
 
+## Autora
 
-feito por [@laissemy](https://github.com/laissemy).
+Feito por [@laissemy](https://github.com/laissemy).
