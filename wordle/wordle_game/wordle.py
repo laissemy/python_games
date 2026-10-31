@@ -4,11 +4,11 @@ class Wordle:
     NUM_TENTATIVAS = 6
     TAMANHO_PALAVRAS = 5
 
-    def __init__(self, palavra_secreta : str):
+    def __init__(self, palavra_secreta : str, tema : str):
         self.palavra_secreta : str = palavra_secreta.upper()
         self.tentativas = []
-        pass
-
+        self.tema : str = tema
+      
 
     def tentativa(self, tentativa : str):
         self.tentativas.append(tentativa.upper())
@@ -19,7 +19,7 @@ class Wordle:
 
     @property
     def possuiTentativas(self):
-        return self.tentativasRestantes >= 0 and not self.vitoria
+        return self.tentativasRestantes > 0 and not self.vitoria
     
     @property
     def vitoria(self):
