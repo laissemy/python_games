@@ -38,7 +38,7 @@ E  (amarelo)  → existe, mas em outro lugar
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/laislirah/python_games.git
+git clone https://github.com/laissemy/python_games.git
 cd python_games/wordle
 ```
 
